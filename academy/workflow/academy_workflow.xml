@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+<!--CABECERA DEL WORKFLOW-->
+<record model="workflow" id="wkf_academy_id">
+    <field name="name">academy.wkf</field>
+    <field name="osv">academy.course</field>
+    <!-- <field name="on_create" eval='True' /> -->
+    <field name="on_create">True</field>
+</record>
+
+
+<!--RECORD DE ACTIVIDADES DEL WORKFLOW-->
+<record model="workflow.activity" id="act_new">
+    <field name="wkf_id" ref="wkf_academy_id" />
+    <field name="flow_start" eval='True' />
+    <field name="name">new</field>
+    <field name="kind">function</field>
+    <field name="action">academy_new()</field>
+</record>
+
+<record model="workflow.activity" id="act_assigned">
+    <field name="wkf_id" ref="wkf_academy_id" />
+    <field name="name">assigned</field>
+    <field name="kind">function</field>
+    <field name="action">academy_assigned()</field>
+</record>
+
+<record model="workflow.activity" id="act_negotiation">
+    <field name="wkf_id" ref="wkf_academy_id" />
+    <field name="name">negotiation</field>
+    <field name="kind">function</field>
+    <field name="action">academy_negotiation()</field>
+</record>
+
+<record model="workflow.activity" id="act_won">
+    <field name="wkf_id" ref="wkf_academy_id" />
+    <field name="name">won</field>
+    <field name="kind">function</field>
+    <field name="action">academy_won()</field>
+    <field name="flow_stop" eval='True' />
+</record>
+
+<record model="workflow.activity" id="act_lost">
+    <field name="wkf_id" ref="wkf_academy_id" />
+    <field name="name">lost</field>
+    <field name="kind">function</field>
+    <field name="action">academy_lost()</field>
+    <field name="flow_stop" eval='True' />
+</record>
+
+
+<!--RECORD DE TRANSICIONES DEL WORKFLOW-->
+<record model="workflow.transition" id="t1">
+    <field name="act_from" ref="act_new" />
+    <field name="act_to" ref="act_assigned" />
+    <field name="signal">academy_assigned</field>
+</record>
+
+<record model="workflow.transition" id="t2">
+    <field name="act_from" ref="act_assigned" />
+    <field name="act_to" ref="act_negotiation" />
+    <field name="signal">academy_negotiation</field>
+</record>
+
+<record model="workflow.transition" id="t3">
+    <field name="act_from" ref="act_negotiation" />
+    <field name="act_to" ref="act_won" />
+    <field name="signal">academy_won</field>
+</record>
+
+<record model="workflow.transition" id="t4">
+    <field name="act_from" ref="act_negotiation" />
+    <field name="act_to" ref="act_lost" />
+    <field name="signal">academy_lost</field>
+</record>
+
+	</data>
+</openerp>
