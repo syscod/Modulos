@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+<record id="view_academy_wizard" model="ir.ui.view">
+    <field name="name">Print Classrooms</field>
+    <field name="model">academy.report</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">  
+	<form string="academy.report">
+     
+	 <group col="4" colspan="4" attrs="{'invisible':[('state','=','done')]}">
+	 <label string="Are you sure to update capacity classrooms?" colspan="4"/>
+	 <newline />
+	 <field name="classroom_origen"/>
+	 <field name="classroom_update"/>
+	 </group>
+         
+     <group col="4" colspan="4" attrs="{'invisible':[('state','=','first')]}">
+	 <field name="classroom_info_updates"/>
+	 </group>
+         
+     <field name="state" invisible="1" /> 
+	<button string="Cancel" special="cancel" icon="gtk-cancel" states="first" />
+	<button string="update" name="update_classrooms" type="object" icon="gtk-ok" states="first" /> 
+	<button string="print" name="print_classrooms" type="object" icon="gtk-print" states="first" />
+	<button string="Close" special="cancel" icon="gtk-ok" states="done" />
+  
+	</form>             
+    </field>
+</record>
+
+<record id="action_academy_report" model="ir.actions.act_window">
+    <field name="name">Print Classrooms</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">academy.report</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+</record>
+
+<menuitem id="menu_academy_report" action="action_academy_report" parent="academy.menu_registro" name="Print Classrooms"/>
+
+</data>
+</openerp>

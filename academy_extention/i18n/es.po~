@@ -1,0 +1,52 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* academy_extention
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0alpha-20130112-000101\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-01-18 16:08+0000\n"
+"PO-Revision-Date: 2013-01-18 16:08+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: academy_extention
+#: field:academy.course,complete:0
+msgid "Complete"
+msgstr "Complete"
+
+#. module: academy_extention
+#: field:academy.course,student_ids:0
+msgid "Students"
+msgstr "Students"
+
+#. module: academy_extention
+#: field:academy.course,remaining_seats:0
+msgid "Remaining seats"
+msgstr "Remaining seats"
+
+#. module: academy_extention
+#: help:academy.course,remaining_seats:0
+msgid "Remaining seats of the course"
+msgstr "Remaining seats of the course"
+
+#. module: academy_extention
+#: help:academy.course,student_ids:0
+msgid "Students enrolled in the course"
+msgstr "Students enrolled in the course"
+
+#. module: academy_extention
+#: help:academy.course,complete:0
+msgid "Complete course. No more one can be enroled."
+msgstr "Complete course. No more one can be enroled."
+
+#. module: academy_extention
+#: model:ir.model,name:academy_extention.model_academy_course
+msgid "academy.course"
+msgstr "academy.course"
+
