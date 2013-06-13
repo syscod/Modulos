@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+    
+    	<record id="view_order_add_discount" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            <group col="13" colspan="10" position="replace">
+            <group col="13" colspan="10">
+            	 <field name="amount_untaxed" sum="Untaxed amount" colspan="4"/>
+            	 <field name="invoice_discount" colspan="2"/>
+				 <button name="apply_discount" states="draft" string="Aplicar Descuento" type="object" icon="gtk-execute" colspan="1" context="{'parametro':invoice_discount}"/>
+            	 <button name="mostrar_wizard" states="draft" string="Mostrar wizard" type="object" colspan="1" context="{'parametro':invoice_discount}"/>
+            	 <field name="amount_discounted" colspan="4"/>
+                 <field name="amount_net" sum="Net Amount" colspan="3"/>
+                 <field name="amount_tax" colspan="2"/>
+                 <field name="amount_total" colspan="2"/>
+                 <button name="button_dummy" states="draft" string="Compute" type="object" icon="gtk-execute" colspan="1"/>
+                 <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Advance Invoice"
+                     type="action" icon="gtk-execute" states="draft,manual" groups="base.group_extended" colspan="1"/>
+             </group>
+            </group>
+            </field>
+       </record>
+    	
+       <record id="purchase_order_form_add_discount" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+            <group col="7" colspan="4" position="replace">
+             <group col="6" colspan="6">
+                 <field name="amount_untaxed" sum="Untaxed amount" colspan="2"/>
+                 <field name="invoice_discount" colspan="2"/>
+				 <button name="apply_discount" states="draft" string="Aplicar Descuento" type="object" icon="gtk-execute" colspan="1"/>
+            	 <field name="amount_discounted" colspan="2"/>
+            	 <field name="amount_net" sum="Net Amount" colspan="2"/>
+                 <field name="amount_tax" colspan="2"/>
+                 <field name="amount_total" sum="Total amount" colspan="2"/>
+                 <button colspan="2" name="button_dummy" states="draft" string="Compute" type="object" icon="gtk-execute"/>
+             </group>
+       		 </group>
+            </field>
+        </record> 
+        
+        <record id="sale_order_line_form" model="ir.ui.view">
+            <field name="name">sale.order.line.form</field>
+            <field name="model">sale.order.line</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_line_form2"/>
+            <field name="arch" type="xml">
+            <field name="delay" position="after">
+             <field name="service_id"/>
+            </field>
+            </field>
+        </record>              
+
+    </data>
+</openerp>
