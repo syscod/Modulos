@@ -16,6 +16,7 @@ class academy_course_category(osv.osv):
     
 academy_course_category()
 
+
 class academy_classroom(osv.osv):
     """Academy Classrooms - Aula"""
     _name = 'academy.classroom'
