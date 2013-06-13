@@ -1,0 +1,25 @@
+id	name	model_id:id	group_id:id	perm_read	perm_write	perm_create	perm_unlink
+access_ats_user	venta_credito.venta.credito	model_sri_ats	base.group_user	1	1	1	1
+access_ats_acc	venta_credito.venta.credito	model_sri_ats	account.group_account_user	1	1	1	1
+access_ats_acc_man	venta_credito.venta.credito	model_sri_ats	account.group_account_manager	1	1	1	1
+access_sri_voucher_type_user	venta_credito.venta.credito	model_sri_voucher_type	base.group_user	1	0	0	0
+access_sri_transaction_usage_user	venta_credito.venta.credito	model_sri_transaction_usage	base.group_user	1	0	0	0
+access_sri_tax_support_user	venta_credito.venta.credito	model_sri_tax_support	base.group_user	1	0	0	0
+							
+access_ats_acc	venta_credito.venta.cobro	model_sri_ats	account.group_account_user	1	1	1	1
+access_ats_acc_man	venta_credito.venta.cobro	model_sri_ats	account.group_account_manager	1	1	1	1
+access_sri_voucher_type_user	venta_credito.venta.cobro	model_sri_voucher_type	base.group_user	1	0	0	0
+access_sri_transaction_usage_user	venta_credito.venta.cobro	model_sri_transaction_usage	base.group_user	1	0	0	0
+access_sri_tax_support_user	venta_credito.venta.cobro	model_sri_tax_support	base.group_user	1	0	0	0
+							
+access_ats_acc	venta_credito.cobro.wizard	model_sri_ats	account.group_account_user	1	1	1	1
+access_ats_acc_man	venta_credito.cobro.wizard	model_sri_ats	account.group_account_manager	1	1	1	1
+access_sri_voucher_type_user	venta_credito.cobro.wizard	model_sri_voucher_type	base.group_user	1	0	0	0
+access_sri_transaction_usage_user	venta_credito.cobro.wizard	model_sri_transaction_usage	base.group_user	1	0	0	0
+access_sri_tax_support_user	venta_credito.cobro.wizard	model_sri_tax_support	base.group_user	1	0	0	0
+							
+access_ats_acc	venta_credito.cobro.wizard	model_sri_ats	account.group_account_user	1	1	1	1
+access_ats_acc_man	venta_credito.cobro.wizard	model_sri_ats	account.group_account_manager	1	1	1	1
+access_sri_voucher_type_user	venta_credito.cobro.wizard	model_sri_voucher_type	base.group_user	1	0	0	0
+access_sri_transaction_usage_user	venta_credito.cobro.wizard	model_sri_transaction_usage	base.group_user	1	0	0	0
+access_sri_tax_support_user	venta_credito.cobro.wizard	model_sri_tax_support	base.group_user	1	0	0	0
