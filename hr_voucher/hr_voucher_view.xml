@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+         <record model="ir.ui.view" id="view_hr_voucher_tree">
+            <field name="name">hr.voucher.tree</field>
+            <field name="model">hr.voucher</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';gray:state == 'cancel';red:audit" string="Voucher Entries">
+                    <field name="date"/>
+                    <field name="number"/>
+                    <field name="reference"/>
+                    <field name="partner_id"/>
+                    <field name="journal_id" groups="account.group_account_user"/>
+                    <field name="period_id"/>
+                    <field name="type"/>
+                    <field name="amount" sum="Total Amount"/>
+                    <field name="audit" invisible="0"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_voucher_line_form">
+            <field name="name">hr.voucher.line.form</field>
+            <field name="model">hr.voucher.line</field>
+            <field name="arch" type="xml">
+                <form string="Voucher Lines" version="7.0">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="account_id"/>
+                        <field name="partner_id"/>
+                        <field name="amount"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- This general view is used in 
+             Invoicing - Journal Entries - Journal Vouchers -->
+        <record model="ir.ui.view" id="view_voucher_form">
+            <field name="name">hr.voucher.form</field>
+            <field name="model">hr.voucher</field>
+            <field name="arch" type="xml">
+                <form string="Accounting Voucher" version="7.0">
+                  <header>
+                      <button name="do_payment" type="object" string="Do Payment" states="draft" class="oe_highlight"/>
+                      <button name="cancel_payment" string="Cancel Payment" type="object" states="posted" confirm="Are you sure you want to unreconcile this record?"/>
+                      <button name="cancel_payment" string="Cancel Payment" states="draft,proforma" />
+                      <button name="action_cancel_draft" type="object" states="cancel" string="Set to Draft"/>
+                      <field name="state" widget="statusbar" statusbar_visible="draft,posted" statusbar_colors='{"proforma":"blue"}'/>
+                  </header>
+                  <sheet string="Accounting Voucher">
+                    <group col="4" colspan="4">
+                        <field name="partner_id" required="1"/>
+                        <field name="date" />
+                        <field name="journal_id" widget="selection"/>
+                        <field name="type" required="1"/>
+                        <field name="name" colspan="2"/>
+                        <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                        <field name="reference"/>
+                        <field name="number"/>
+                        <field name="currency_id" groups="base.group_multi_currency"/>
+                        <field name="account_id" widget="selection" invisible="0"/>
+                        <field name="payment_rate_currency_id" invisible="0"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Voucher Entry">
+                            <field name="line_ids">
+                                <tree string="Voucher Items" editable="bottom">
+                                    <field name="account_id"/>
+                                    <field name="name"/>
+                                    <field name="amount" sum="Total Amount"/>
+                                    <field name="type"/>
+                                    <field name="account_analytic_id" groups="analytic.group_analytic_accounting"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <field name="narration" nolabel="1" placeholder="Internal Notes"/>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="tax_id"/>
+                                    <field name="tax_amount" nolabel="1"/>
+                                    <div class="oe_subtotal_footer_separator">
+                                        <label for="amount"/>
+                                        <button type="object" icon="terp-stock_format-scientific"   name="compute_tax" class="oe_link oe_edit_only" string="(Update)" />
+                                    </div>
+                                    <newline/>
+                                    <field name="amount" class="oe_subtotal_footer_separator" nolabel="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Journal Items">
+                            <group col="4">
+                                <field name="period_id"/>
+                                <field name="audit"/>
+                            </group>
+                            <field name="move_ids" readonly="1">
+                               <tree string="Journal Items">
+                                   <field name="move_id"/>
+                                   <field name="ref"/>
+                                   <field name="date"/>
+                                   <field name="statement_id"/>
+                                   <field name="partner_id"/>
+                                   <field name="account_id"/>
+                                   <field name="name"/>
+                                   <field name="debit"/>
+                                   <field name="credit"/>
+                                   <field name="state"/>
+                                   <field name="reconcile_id"/>
+                               </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                  </sheet>
+                  <div class="oe_chatter">
+                      <field name="message_follower_ids" widget="mail_followers"/>
+                      <field name="message_ids" widget="mail_thread"/>
+                  </div>
+                </form>
+            </field>
+        </record>
+
+    <record model="ir.actions.act_window" id="action_hr_voucher_new_form">
+        <field name="name">Pagos</field>
+        <field name="res_model">hr.voucher</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>  
+
+        <menuitem name="Pagos" id="menu_hr_voucher"/>
+        <menuitem name="Pagos" parent="menu_hr_voucher" id="menu_hr_voucher_list"/> 
+        <menuitem parent="menu_hr_voucher_list" id="menu_hr_voucher_tree" action="action_hr_voucher_new_form"/>
+	
+  	
+
+    </data>
+</openerp>
