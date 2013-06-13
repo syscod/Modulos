@@ -1,0 +1,174 @@
+<openerp>
+    <data>
+
+	<record id="view_venta_credito_form" model="ir.ui.view">
+	    <field name="name">venta.credito.form</field>
+	    <field name="model">venta.credito</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">  
+		<form string="venta.credito">
+                 <field name="es_venta" invisible="0"/>
+                 <field name="name"/>
+		 <field name="numero"/>
+                 <newline/>
+                 <field name="cliente_id" domain="[('customer','=',1)]" on_change="on_change_cliente(cliente_id, context)"  context="{'es_venta':True}"/>
+                 <field name="direccion"/>
+                 <newline/>
+                 <field name="garante_id"/>
+                 <newline/>
+                 <field name="fecha_venta"/>
+                 <newline/>
+                 <field name="producto_id"/>
+                 <field name="valor" on_change="get_saldo(valor,entrada,context)"/>
+                 <field name="entrada" on_change="get_saldo(valor,entrada,context)"/>
+                 <field name="saldo"/>
+		 <newline/>
+                 <field name="cobros_ids" on_change="get_saldo(valor,entrada,context)">
+                       <tree string="Cobros Items" editable="bottom">
+                            <field name="fecha_cobro"/>
+                            <field name="abono" sum="Total Pagado"/>
+                            <field name="interes" sum="Total Interes"/>
+                       </tree>
+                 </field>
+		</form>             
+	    </field>
+	</record>
+
+        <record id="view_compra_credito_form" model="ir.ui.view">
+	    <field name="name">venta.credito.form2</field>
+	    <field name="model">venta.credito</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">  
+		<form string="venta.credito">
+                 <field name="es_venta" invisible="0"/>
+                 <field name="name"/>
+		 <field name="numero"/>
+                 <newline/>
+                 <field name="cliente_id" string="Proveedor" domain="[('supplier','=',1)]" on_change="on_change_cliente(cliente_id)" context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"/>
+                 <field name="direccion"/>
+                 <newline/>
+                 <newline/>
+                 <field name="fecha_venta"/>
+                 <newline/>
+                 <field name="producto_id"/>
+                 <field name="valor" on_change="get_saldo(valor,entrada,context)"/>
+                 <field name="entrada" on_change="get_saldo(valor,entrada,contex)"/>
+                 <field name="saldo"/>
+		 <newline/>
+                 <field name="cobros_ids" string="Lineas de Pagos" on_change = "get_saldo(valor,entrada,context)">
+                       <tree string="Cobros Items" editable="bottom">
+                            <field name="fecha_cobro"/>
+                            <field name="abono" sum="Total Pagado"/>
+                            <field name="interes" sum="Total Interes"/>
+                       </tree>
+                 </field>
+		</form>             
+	    </field>
+	</record>
+
+        <record model="ir.ui.view" id="view_venta_credito_tree">
+            <field name="name">venta.credito.tree</field>
+	    <field name="model">venta.credito</field>
+	    <field name="type">tree</field>
+	    <field name="arch" type="xml">  
+            <tree string="Cobros Items">
+                   <field name="direccion"/>
+		   <field name="fecha_venta"/>
+		   <field name="producto_id"/>
+            </tree>
+           </field>
+        </record>
+
+       	<record id="view_cobro_wizard" model="ir.ui.view">
+	    <field name="name">Cobro</field>
+	    <field name="model">cobro.wizard</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">  
+		<form string="cobro.wizard">
+		 <field name="venta_credito_id"/>
+                 <newline/>
+                 <field name="abono"/>
+                 <newline/>
+                 <field name="interes"/>
+                 <newline/>
+                 <field name="fecha_cobro"/>
+		 <newline/>
+                 <button string="Guardar" name="do_cobro" type="object"/>
+                 <button string="Cancelar" special="cancel" icon="gtk-ok" />
+		</form>             
+	    </field>
+	</record>
+
+       <record id="view_venta_credito_wizard" model="ir.ui.view">
+	    <field name="name">Venta a Credito</field>
+	    <field name="model">venta.credito.wizard</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">  
+		<form string="venta.credito.wizard">
+		 <field name="numero"/>
+                 <newline/>
+                 <field name="cliente_id"/>
+                 <newline/>
+                 <field name="garante_id"/>
+                 <newline/>
+                 <field name="fecha_venta"/>
+                 <newline/>
+                 <field name="producto_id"/>
+                 <field name="valor"/>
+                 <field name="entrada"/>
+                 <field name="saldo"/>
+		 <newline/>
+                 
+                 <button string="Guardar" name="do_venta" type="object"/>
+                 <button string="Cancelar" special="cancel" icon="gtk-ok" />
+		</form>             
+	    </field>
+	</record>
+
+        <record model="ir.actions.act_window" id="action_compra_credito_new_form">
+        <field name="name">Compras a Credito</field>
+        <field name="res_model">venta.credito</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_compra_credito_form"/>
+        <field name="domain">[('es_venta','=',True)]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_venta_credito_new_form">
+        <field name="name">Venta a Credito</field>
+        <field name="res_model">venta.credito</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_venta_credito_form"/>
+        <field name="domain">[('es_venta','=',False)]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_cobro_new_wizard">
+        <field name="name">Nuevo Cobro</field>
+        <field name="res_model">cobro.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_venta_credito_new_wizard">
+        <field name="name">Nueva Venta a Credito</field>
+        <field name="res_model">venta.credito.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_venta_credito" name="Creditos"/>
+        <menuitem id="menu_venta_credito_list" name="Ventas" parent="menu_venta_credito"/>
+        <menuitem id="menu_compra_credito_list" name="Compras" parent="menu_venta_credito"/> 
+        <menuitem id="menu_cobro_wizard" parent="menu_venta_credito_list" action="action_cobro_new_wizard"/>
+        <menuitem id="menu_venta_credito_wizard" parent="menu_venta_credito_list" action="action_venta_credito_new_wizard"/>
+        <menuitem id="menu_venta_credito_tree" parent="menu_venta_credito_list" action="action_venta_credito_new_form"/>
+        <menuitem id="menu_compra_credito_tree" parent="menu_compra_credito_list" action="action_compra_credito_new_form"/>
+    </data>
+</openerp>
