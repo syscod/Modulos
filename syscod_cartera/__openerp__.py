@@ -23,7 +23,7 @@
     "name" : "Manejo de Ventas a Credito",
     "version" : "1.0",
     "description" : "Manejo de Ventas a Credito, cobros, clientes",
-    "author" : "Syscon",
+    "author" : "Syscod",
     'website': 'http://www.syscod.comyr.com/',
     "depends" : ['base','product',],
     "category" : "Generic Modules",
