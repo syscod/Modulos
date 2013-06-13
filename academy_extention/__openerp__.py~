@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
@@ -19,6 +20,36 @@
 #
 ##############################################################################
 
-import academy
-import wizard
+#{
+#'name': 'academy extention',
+#'version': '0.1',
+#'category': 'Generic Modules',
+#'description': """Academy module description""",
+#'author': 'zikzakmedia',
+#'website': 'http://www.zikzakmedia.com',
+#'depends': ['base'],
+#'init_xml': [],
+#'update_xml': ['academy_view.xml','security/ir.model.access.csv',],
+#'demo_xml': [],
+#'installable': True,
+#}
+
+{
+'name': 'academy extention',
+'version': '0.1',
+'category': 'Generic Modules',
+'description': """Academy module extention""",
+'author': 'zikzakmedia',
+'website': 'http://www.zikzakmedia.com',
+'depends': ['base'],
+'init_xml': [],
+'update_xml': [ 
+'academy_view.xml',
+'security/ir.model.access.csv',
+],
+'demo_xml': [],
+'installable': True,
+}
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

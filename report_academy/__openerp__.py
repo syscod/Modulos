@@ -19,6 +19,17 @@
 #
 ##############################################################################
 
-import academy
-import wizard
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+{
+    "name" : "Aeroo Reports for Academy",
+    "version" : "1.0",
+    "description" : "Module Academy Report",
+    "author" : "ITX",
+    'website': 'http://www.itx.ec',
+    "depends" : ["base", "academy", "report_aeroo", "report_aeroo_ooo"],
+    "category" : "Generic Modules/Aeroo Reporting",
+    "init_xml" : [],
+    "demo_xml" : [],
+    "update_xml" : ["academy_report_view.xml","report/academy_report.xml"],
+    "installable": True,
+    "license" : "GPL-3 or any later version",
+}

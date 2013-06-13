@@ -44,7 +44,7 @@
                  <field name="name"/>
 		 <field name="numero"/>
                  <newline/>
-                 <field name="cliente_id" string="Proveedor" domain="[('supplier','=',1)]" on_change="on_change_cliente(cliente_id)" default_get="{'supplier':True,'customer':False}" context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"/>
+                 <field name="cliente_id" string="Proveedor" domain="[('supplier','=',1)]" on_change="on_change_cliente(cliente_id)" context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"/>
                  <field name="direccion"/>
                  <newline/>
                  <newline/>
@@ -57,7 +57,7 @@
 		 <newline/>
                  <field name="cobros_ids" string="Lineas de Pagos" on_change = "get_saldo(valor,entrada,context)">
                        <tree string="Cobros Items" editable="bottom">
-                            <field name="fecha_cobro"/>
+                            <field name="fecha_cobro" align="center"/>
                             <field name="abono" sum="Total Pagado"/>
                             <field name="interes" sum="Total Interes"/>
                        </tree>

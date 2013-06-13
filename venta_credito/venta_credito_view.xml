@@ -57,7 +57,7 @@
 		 <newline/>
                  <field name="cobros_ids" string="Lineas de Pagos" on_change = "get_saldo(valor,entrada,context)">
                        <tree string="Cobros Items" editable="bottom">
-                            <field name="fecha_cobro"/>
+                            <field name="fecha_cobro" align="center"/>
                             <field name="abono" sum="Total Pagado"/>
                             <field name="interes" sum="Total Interes"/>
                        </tree>

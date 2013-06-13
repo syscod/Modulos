@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+<record model="ir.ui.view" id="view_academy_course_form_inherit">
+<field name="name">academy.course.form.inherit</field>
+<field name="model">academy.course</field>
+<field name="type">form</field>
+<field name="inherit_id" ref="academy.view_academy_course_form"/>
+<field name="arch" type="xml">
+<field name="description" position="after">
+<!--<xpath expr="/form/field[@name='description']" position="after">-->
+<field name="student_ids" colspan="4" select="2"/>
+<field name="remaining_seats"/>
+<field name="complete" />
+<!--<xpath/>-->
+</field>
+</field>
+</record>
+
+</data>
+</openerp>

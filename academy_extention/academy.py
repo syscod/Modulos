@@ -19,6 +19,18 @@
 #
 ##############################################################################
 
-import academy
-import wizard
+from openerp.osv import fields, osv
+
+class academy_course(osv.osv):
+    _name = 'academy.course'
+    _inherit = 'academy.course' 
+    _columns = {
+                'student_ids': fields.many2many('res.partner', 'course_address_rel', 'course_id', 'res_partner_address_id', 'Students', help='Students enrolled in the course'),
+                'remaining_seats': fields.integer('Remaining seats', help='Remaining seats of the course'), 
+                'complete': fields.boolean('Complete', help='Complete course. No more one can be enroled.'),
+                }
+    
+academy_course()
+
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
