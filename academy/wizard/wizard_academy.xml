@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="wizard_academy" model="ir.ui.view">
+            <field name="name">academy.wizard.form</field>
+            <field name="model">academy.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Academy Classroom">
+                <group col="4" colspan="4" attrs="{'invisible':[('state','=','done')]}">
+                    <label string="Are you sure to update capacity classrooms?" colspan="4"/>
+                    <newline />
+                    <field name="classroom_origen"/>
+                    <field name="classroom_update"/>
+                </group>
+                <group col="4" colspan="4" attrs="{'invisible':[('state','=','first')]}">
+                    <field name="classroom_info_updates"/>
+                </group>
+                <group col="2" colspan="4">
+                    <field name="state" invisible="1" />
+                    <button string="Cancel" special="cancel" icon="gtk-cancel" states="first" />
+                    <button string="update" name="update_classrooms" type="object" icon="gtk-ok" states="first" />
+                    <button string="Close" special="cancel" icon="gtk-ok" states="done" />
+                </group>
+            </form>
+            </field>
+        </record>
+    </data>
+</openerp>
