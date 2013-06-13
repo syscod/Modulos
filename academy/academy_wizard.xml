@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="action_academy_wizard" model="ir.actions.act_window">
+            <field name="name">Update classrooms</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">academy.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem name="Update classrooms" action="action_academy_wizard" id="academy_wizard" sequence="50" parent="menu_academy_parent"/>
+    </data>
+</openerp>

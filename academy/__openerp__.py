@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
@@ -30,12 +29,14 @@
 'depends': ['base'],
 'init_xml': [],
 'update_xml': [ 
-'academy_view.xml',
-'security/academy_security.xml',
-'security/ir.model.access.csv',
+            'academy_view.xml',
+            'academy_wizard.xml',
+            'wizard/wizard_academy.xml',
+            'workflow/academy_workflow.xml'
+            'academy_view.xml',
+            'security/academy_security.xml',
+            'security/ir.model.access.csv',
 ],
 'demo_xml': [],
 'installable': True,
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
