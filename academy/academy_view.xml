@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <openerp>
 	<data>
- 		<menuitem name="Academy" id="menu_academy"/>
- 			<menuitem name="All academy" id="menu_academy_parent" parent="menu_academy"/>
+    <menuitem name="Academy" id="menu_academy"/>
+    <menuitem name="All academy" id="menu_academy_parent" parent="menu_academy"/>
     <record model="ir.ui.view" id="view_academy_course_category_form">
         <field name="name">academy.course.category.form</field>
         <field name="model">academy.course.category</field>
@@ -15,6 +15,7 @@
             </form>
         </field>
     </record>
+
     <record model="ir.ui.view" id="view_academy_course_category_tree">
         <field name="name">academy.course.category.tree</field>
         <field name="model">academy.course.category</field>

@@ -135,9 +135,9 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         </record>
-<!-- ############################VENTAS########################################### -->
+<!-- ############################VENTAS####################################### -->
 
-<!-- ############################COMPRAS########################################### -->
+<!-- ############################COMPRAS###################################### -->
         <record id="view_compra_credito_form" model="ir.ui.view">
 	    <field name="name">venta.credito.form2</field>
 	    <field name="model">venta.credito</field>
