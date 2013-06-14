@@ -62,6 +62,24 @@ class venta_credito(osv.osv):
         values['direccion'] = cliente.street 
         values['telefono'] = cliente.phone
         return {'value':values}
+
+    def onChange_pedido(self, cr, uid, ids, comprobante_id, context=None):
+        values={}
+        comprobant=self.pool.get('stock.picking.in').browse(cr, uid,comprobante_id, context)
+        if (comprobant):            
+            values['cliente_id']=comprobant.partner_id.name
+            values['direccion']=comprobant.partner_id.street
+            values['telefono']=comprobant.partner_id.phone
+        return {'value': values} or False
+    
+    def onChange_venta(self, cr, uid, ids, comprobante_id, context=None):
+        values={}
+        comprobant=self.pool.get('stock.picking.out').browse(cr, uid,comprobante_id, context)
+        if (comprobant):            
+            values['cliente_id']=comprobant.partner_id.name
+            values['direccion']=comprobant.partner_id.street
+            values['telefono']=comprobant.partner_id.phone
+        return {'value': values} or False
     
     def on_change_garante(self, cr, uid, ids,cliente_id,context=None):
         cliente = self.pool.get('res.partner').browse(cr,uid,cliente_id,context)
@@ -84,7 +102,8 @@ class venta_credito(osv.osv):
     _columns = {
                 'name':fields.char('Nombre', size=512, help="Nombre de la venta realizada."),
                 'numero':fields.char('Numero', size=512, help="Identificador de la venta realizada."),
-                'cliente_id':fields.many2one('res.partner', 'Cliente', required = True, help="Cliente al que se le da el credito"),  
+                'cliente_id':fields.char('Cliente', size=64, required = True, help="Cliente al que se le da el credito"),
+                #'cliente_id':fields.many2one('res.partner', 'Cliente', required = True, help="Cliente al que se le da el credito"),  
                 'direccion':fields.char('Direccion', size=512, help="Direccion del cliente."),
                 'telefono':fields.char('Telefono', size=512, help="Telefono del Cliente."),
                 'garante_id':fields.many2one('res.partner', 'Garante', help="Garante del credito de la venta."),
@@ -95,7 +114,10 @@ class venta_credito(osv.osv):
                 'producto_id':fields.many2one('product.product', 'Articulo', help="Articulo que se incluye en la venta."),
                 'valor':fields.float('Valor', help="Valor del Articulo vendido."),
                 'saldo':fields.function(_get_saldo, string='Saldo', type='float', help="Valor pendiente a pagar"),
-                #'saldo':fields.float('Saldo', help="Valor que queda de saldo."),
+                'pedidos':fields.many2one('stock.picking.in', 'Compra Ref', help="Pedido de compra No"),
+                'ventas':fields.many2one('stock.picking.out', 'Venta Ref', help="Pedido de venta No"),
+                #'pedidos':fields.char('Compra Ref',size=64, help="Pedido de compra No"),
+                #'ventas':fields.char('Venta Ref',size=64, help="Pedido de venta No"),
                 'cobros_ids':fields.one2many('venta.cobro','venta_credito_id','Lineas de Cobros'),
                 'es_venta':fields.boolean('Es venta'),
                 }
