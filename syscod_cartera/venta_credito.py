@@ -1,5 +1,4 @@
 
-
 import time
 from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
@@ -7,8 +6,8 @@ from openerp.tools.translate import _
 from openerp.tools import float_compare
 
 class venta_credito(osv.osv):    
-    _name = 'venta.credito'       
-       
+    _name = 'venta.credito'
+              
     def get_saldo(self, cr, uid, ids, context=None):
         saldo = valor = val = va = ent = entrada= 0.0
         values={}
@@ -63,24 +62,6 @@ class venta_credito(osv.osv):
         values['direccion'] = cliente.street 
         values['telefono'] = cliente.phone
         return {'value':values}
-
-    def onChange_pedido(self, cr, uid, ids, comprobante_id, context=None):
-        values={}
-        comprobant=self.pool.get('stock.picking.in').browse(cr, uid,comprobante_id, context)
-        if (comprobant):            
-            values['cliente_id']=comprobant.partner_id.name
-            values['direccion']=comprobant.partner_id.street
-            values['telefono']=comprobant.partner_id.phone
-        return {'value': values} or False
-    
-    def onChange_venta(self, cr, uid, ids, comprobante_id, context=None):
-        values={}
-        comprobant=self.pool.get('stock.picking.out').browse(cr, uid,comprobante_id, context)
-        if (comprobant):            
-            values['cliente_id']=comprobant.partner_id.name
-            values['direccion']=comprobant.partner_id.street
-            values['telefono']=comprobant.partner_id.phone
-        return {'value': values} or False
     
     def on_change_garante(self, cr, uid, ids,cliente_id,context=None):
         cliente = self.pool.get('res.partner').browse(cr,uid,cliente_id,context)
@@ -90,6 +71,7 @@ class venta_credito(osv.osv):
     def _check_paid(self, cr, uid, ids, prop, unknow_none, context):
         form = self.browse(cr, uid, ids[0])
         return True
+    
     def _get_saldo(self, cr, uid, ids, prop, unknow_none, context):
         res = {}
         val = saldo = 0.0
@@ -100,11 +82,24 @@ class venta_credito(osv.osv):
             saldo = form.valor - val - form.entrada
             res[form.id] = saldo
         return res
+    
+    def _get_name(self, cr, uid, ids, prop, unknow_none, context):
+        res = {}
+        val = ""
+        for form in self.browse(cr, uid, ids, context=context):
+            if form.numero and form.cliente_id.name:
+                val= form.numero + " " + form.cliente_id.name + " " + form.fecha_venta
+            elif form.numero and not form.cliente_id.name:
+                val = form.numero + " " + form.fecha_venta
+            elif not form.numero and form.cliente_id.name:
+                val = form.cliente_id.name + " " + form.fecha_venta
+            res[form.id] = val
+        return res
+    
     _columns = {
                 'name':fields.char('Nombre', size=512, help="Nombre de la venta realizada."),
                 'numero':fields.char('Numero', size=512, help="Identificador de la venta realizada."),
-                'cliente_id':fields.char('Cliente', size=64, required = True, help="Cliente al que se le da el credito"),
-                #'cliente_id':fields.many2one('res.partner', 'Cliente', required = True, help="Cliente al que se le da el credito"),  
+                'cliente_id':fields.many2one('res.partner', 'Cliente', required = True, help="Cliente al que se le da el credito"),  
                 'direccion':fields.char('Direccion', size=512, help="Direccion del cliente."),
                 'telefono':fields.char('Telefono', size=512, help="Telefono del Cliente."),
                 'garante_id':fields.many2one('res.partner', 'Garante', help="Garante del credito de la venta."),
@@ -115,10 +110,7 @@ class venta_credito(osv.osv):
                 'producto_id':fields.many2one('product.product', 'Articulo', help="Articulo que se incluye en la venta."),
                 'valor':fields.float('Valor', help="Valor del Articulo vendido."),
                 'saldo':fields.function(_get_saldo, string='Saldo', type='float', help="Valor pendiente a pagar"),
-                'pedidos':fields.many2one('stock.picking.in', 'Compra Ref', help="Pedido de compra No"),
-                'ventas':fields.many2one('stock.picking.out', 'Venta Ref', help="Pedido de venta No"),
-                #'pedidos':fields.char('Compra Ref',size=64, help="Pedido de compra No"),
-                #'ventas':fields.char('Venta Ref',size=64, help="Pedido de venta No"),
+                #'saldo':fields.float('Saldo', help="Valor que queda de saldo."),
                 'cobros_ids':fields.one2many('venta.cobro','venta_credito_id','Lineas de Cobros'),
                 'es_venta':fields.boolean('Es venta'),
                 }
@@ -175,20 +167,33 @@ cobro_wizard()
 
 
 class venta_credito_wizard(osv.osv_memory):
+    
     _name = 'venta.credito.wizard'
+    
     def _get_saldo(self, cr, uid, ids, prop, unknow_none, context):
-        val = 0.0
+        res = {}
         saldo = 0.0
         for form in self.browse(cr,uid,ids):
-            for line in form.cobros_ids:
-                val += line.abono
-        saldo = form.valor - val - form.entrada 
-        return {'value':{'saldo': saldo}}
+            res[form.id] = form.valor - form.entrada
+        return res
+    
+    def _get_name(self, cr, uid, ids, prop, unknow_none, context):
+        res = {}
+        val = ""
+        for form in self.browse(cr, uid, ids, context=context):
+            if form.numero and form.cliente_id.name:
+                val= form.numero + " " + form.cliente_id.name + " " + form.fecha_venta
+            elif form.numero and not form.cliente_id.name:
+                val = form.numero + " " + form.fecha_venta
+            elif not form.numero and form.cliente_id.name:
+                val = form.cliente_id.name + " " + form.fecha_venta
+            res[form.id] = val
+        return res
     
     _columns = {
-                'name':fields.char('Nombre', size=512, help="Nombre de la venta realizada."),
+                'name':fields.function(_get_name, string='Nombre', type='char', help="Nombre del credito"),
                 'numero':fields.char('Numero', size=512, help="Identificador de la venta realizada."),
-                'cliente_id':fields.many2one('res.partner', 'Cliente', help="Cliente al que se le da el credito"),
+                'cliente_id':fields.many2one('res.partner', 'Cliente', required = True, help="Cliente al que se le da el credito"),
                 'garante_id':fields.many2one('res.partner', 'Garante', help="Garante del credito de la venta."),
                 'entrada':fields.float('Entrada', help="Valor que se dio de entrada."),
                 'fecha_venta':fields.date('Date', readonly=True, select=True, help="Dia en que se realiza la venta"),
@@ -202,10 +207,10 @@ class venta_credito_wizard(osv.osv_memory):
     }  
     
     def do_venta(self, cr, uid, ids, context=None):
-        venta_pool =  self.pool.get('venta.cobro')
+        venta_pool =  self.pool.get('venta.credito')
         for form in self.browse(cr, uid, ids, context=context):
             venta_pool.create(cr, uid, {
-                                        'numero':form.numero,
+                                        'name':form.name,
                                         'cliente_id':form.cliente_id.id,
                                         'garante_id':form.garante_id.id,
                                         'entrada':form.entrada,
@@ -213,12 +218,15 @@ class venta_credito_wizard(osv.osv_memory):
                                         'producto_id':form.producto_id.id,
                                         'valor':form.valor,
                                         'saldo':form.saldo,
+                                        'numero':form.numero,
+                                        'es_venta':1, #especifica que se trata de una venta
                                         })
         return True
     
 venta_credito_wizard()
 
 class pago_wizard(osv.osv_memory):
+    
     _name = 'pago.wizard'
     _columns = {
                 'venta_credito_id':fields.many2one('venta.credito', 'Venta', required=1, ondelete='cascade'),
@@ -231,7 +239,7 @@ class pago_wizard(osv.osv_memory):
         'fecha_cobro': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
-    def do_cobro(self, cr, uid, ids, context=None):
+    def do_pago(self, cr, uid, ids, context=None):
         cobro_pool =  self.pool.get('venta.cobro')
         if context is None: context = {}
         for form in self.browse(cr, uid, ids, context=context):
@@ -247,20 +255,34 @@ cobro_wizard()
 
 
 class compra_credito_wizard(osv.osv_memory):
+    
     _name = 'compra.credito.wizard'
+    
     def _get_saldo(self, cr, uid, ids, prop, unknow_none, context):
-        val = 0.0
+        res = {}
         saldo = 0.0
         for form in self.browse(cr,uid,ids):
-            for line in form.cobros_ids:
-                val += line.abono
-        saldo = form.valor - val - form.entrada 
-        return {'value':{'saldo': saldo}}
+            res[form.id] = form.valor - form.entrada
+        return res
+    
+    def _get_name(self, cr, uid, ids, prop, unknow_none, context):
+        res = {}
+        val = ""
+        for form in self.browse(cr, uid, ids, context=context):
+            if form.numero and form.cliente_id.name:
+                val= form.numero + " " + form.cliente_id.name + " " + form.fecha_venta
+            elif form.numero and not form.cliente_id.name:
+                val = form.numero + " " + form.fecha_venta
+            elif not form.numero and form.cliente_id.name:
+                val = form.cliente_id.name + " " + form.fecha_venta
+            res[form.id] = val
+        return res
     
     _columns = {
-                'name':fields.char('Nombre', size=512, help="Nombre de la venta realizada."),
+                #'name':fields.char('Nombre', size=512, help="Nombre de la venta realizada."),
+                'name':fields.function(_get_name, string='Nombre', type='char', help="Nombre del credito"),
                 'numero':fields.char('Numero', size=512, help="Identificador de la venta realizada."),
-                'cliente_id':fields.many2one('res.partner', 'Cliente', help="Cliente al que se le da el credito"),
+                'cliente_id':fields.many2one('res.partner', 'Cliente', required = True, help="Cliente al que se le da el credito"),
                 'garante_id':fields.many2one('res.partner', 'Garante', help="Garante del credito de la venta."),
                 'entrada':fields.float('Entrada', help="Valor que se dio de entrada."),
                 'fecha_venta':fields.date('Date', readonly=True, select=True, help="Dia en que se realiza la venta"),
@@ -273,11 +295,12 @@ class compra_credito_wizard(osv.osv_memory):
         'fecha_venta': lambda *a: time.strftime('%Y-%m-%d'),
     }  
     
-    def do_venta(self, cr, uid, ids, context=None):
-        venta_pool =  self.pool.get('venta.cobro')
+    def do_compra(self, cr, uid, ids, context=None):
+        venta_pool =  self.pool.get('venta.credito')
         for form in self.browse(cr, uid, ids, context=context):
             venta_pool.create(cr, uid, {
                                         'numero':form.numero,
+                                        'name':form.name,
                                         'cliente_id':form.cliente_id.id,
                                         'garante_id':form.garante_id.id,
                                         'entrada':form.entrada,
@@ -286,6 +309,8 @@ class compra_credito_wizard(osv.osv_memory):
                                         'valor':form.valor,
                                         'saldo':form.saldo,
                                         })
+        import pdb
+        pdb.set_trace()
         return True
     
 compra_credito_wizard()
